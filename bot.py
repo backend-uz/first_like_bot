@@ -11,17 +11,25 @@ count_like = 0
 count_dis = 0
 
 def like_and_dislike(update: Update, context: CallbackContext):
+    global count_like
+    global count_dis
     text = update.message.text
-    if text == "👍":
+    bot = context.bot
+    chat_id = update.message.chat.id
+    if text[0] == "👍":
         count_like += 1
-    elif text == "👎":
+    elif text[0] == "👎":
         count_dis += 1
+    btn1 = KeyboardButton(text=f"👍 {count_like}")
+    btn2 = KeyboardButton(text=f"👎 {count_dis}")
+    keyboard = ReplyKeyboardMarkup([[btn1, btn2]], resize_keyboard=True)
+    bot.sendMessage(chat_id, "LIKE and DISLIKE", reply_markup=keyboard)
 
 def start(update: Update, context:CallbackContext):
     bot = context.bot
     chat_id = update.message.chat.id
-    btn1 = KeyboardButton(text="👍 f'{count_like}'")
-    btn2 = KeyboardButton(text="👎 f'{count_dis}'")
+    btn1 = KeyboardButton(text=f"👍 {count_like}")
+    btn2 = KeyboardButton(text=f"👎 {count_dis}")
     keyboard = ReplyKeyboardMarkup([[btn1, btn2]], resize_keyboard=True)
     bot.sendMessage(chat_id, "LIKE and DISLIKE", reply_markup=keyboard)
 
