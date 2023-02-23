@@ -7,23 +7,23 @@ TOKEN=os.environ.get('TOKEN')
 updater = Updater(TOKEN)
 dp = updater.dispatcher
 
-def start(update: Update, context:CallbackContext):
-    bot = context.bot
-
-    chat_id = update.message.chat.id
-
-    btn1 = KeyboardButton(text="👍 1")
-    btn2 = KeyboardButton(text="👎 2")
-
-    keyboard = ReplyKeyboardMarkup([[btn1, btn2]], resize_keyboard=True)
-
-
-    bot.sendMessage(chat_id, "LIKE and DISLIKE", reply_markup=keyboard)
+count_like = 0
+count_dis = 0
 
 def like_and_dislike(update: Update, context: CallbackContext):
     text = update.message.text
+    if text == "👍":
+        count_like += 1
+    elif text == "👎":
+        count_dis += 1
 
-    print(text)
+def start(update: Update, context:CallbackContext):
+    bot = context.bot
+    chat_id = update.message.chat.id
+    btn1 = KeyboardButton(text="👍 f'{count_like}'")
+    btn2 = KeyboardButton(text="👎 f'{count_dis}'")
+    keyboard = ReplyKeyboardMarkup([[btn1, btn2]], resize_keyboard=True)
+    bot.sendMessage(chat_id, "LIKE and DISLIKE", reply_markup=keyboard)
 
 
 dp.add_handler(CommandHandler('start', start))
